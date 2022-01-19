@@ -1,59 +1,75 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 void main(){
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: DicePage(),
     );
   }
 }
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class DicePage extends StatefulWidget {
+  const DicePage({Key? key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _DicePageState createState() => _DicePageState();
 }
-class _HomePageState extends State<HomePage> {
-  bool _switch = false;
-  ThemeData dark = ThemeData(brightness: Brightness.dark);
-  ThemeData light = ThemeData(brightness: Brightness.light);
+
+class _DicePageState extends State<DicePage> {
+  int leftDiceNumer=5;
+  int rightDiceNumber=6;
+  void diceChangeFace() {
+    setState(() {
+      leftDiceNumer=Random().nextInt(6)+1;
+      rightDiceNumber=Random().nextInt(6)+1;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: _switch ? dark:light,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          title: Text("Day and Night"),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+
+        title: Text("Dice App", style:TextStyle(
+          fontSize: 25,
+          letterSpacing: 3,
+          fontWeight: FontWeight.w600,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Row(
             children: [
-              Icon(Icons.lightbulb,size: 60,color: Colors.yellow,),
-              SizedBox(
-                height: 40,
+              Expanded(
+                child: FlatButton(
+                  onPressed: (){
+                    diceChangeFace();
+                  },
+                  child: Image(
+                      image: AssetImage("images/dice$leftDiceNumer.png")
+                  ),
+                ),
               ),
-              Text("Switch",
-                style: TextStyle(fontSize: 40,letterSpacing: 5,fontWeight:FontWeight.bold ),
+              Expanded(
+                child: FlatButton(
+                  onPressed: (){
+                    diceChangeFace();
+                  },
+                  child: Image(
+                      image: AssetImage("images/dice$rightDiceNumber.png")
+                  ),
+                ),
               ),
-              Switch(value: _switch, onChanged: (_newValue){
-                setState(() {
-                  _switch = _newValue;
-                });
-              })
-            ],
-          ),
+
+
+            ]
         ),
       ),
     );
   }
 }
-
